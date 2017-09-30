@@ -14,7 +14,8 @@ import java.util.ArrayList;
  * @author Ricardo Tique
  */
 public class OperadoresGeneticos {
-    public ArrayList<Individuo> cruce(Individuo individuo1, Individuo individuo2, int tamano){
+    public ArrayList<Individuo> cruce(Individuo individuo1, Individuo individuo2){
+        int tamano= 0;
         int [] hijo1 = new int[individuo1.getGenotipo().length];
         int [] hijo2 = new int[individuo1.getGenotipo().length];
         
@@ -22,14 +23,14 @@ public class OperadoresGeneticos {
         
         return null;
     }
-    public ArrayList<Individuo> mutacion(Individuo individuo1, Individuo individuo2, int tamano){
-        Individuo hijo1 = (Individuo) individuo1.clone();
-        Individuo hijo2 = (Individuo) individuo1.clone();
+    public ArrayList<Individuo> mutacion(Individuo individuo1, Individuo individuo2){
+        int tamano= 0;
+        
         ArrayList <Individuo> hijos = new ArrayList<Individuo>();
+        hijos.add((Individuo) individuo1.clone());
+        hijos.add((Individuo) individuo2.clone());
         int indice = (int) (Math.random() * (tamano));
-        if(hijo1.getGenotipo()[indice]==0){
-            
-        } 
+         
         return hijos;
     }
 }
