@@ -22,7 +22,7 @@ public class Main {
         int[] v = {42, 23, 21, 15, 7};
         int b = 60;
         Mochila m = new Mochila(c, v, b, 5);
-        FuncionFitnetss funcionF = new FuncionFitnetss(b, v, c);
+        FuncionFitness funcionF = new FuncionFitness(b, v, c);
         Principal mochila = new Principal(funcionF);
         mochila.start();
     }

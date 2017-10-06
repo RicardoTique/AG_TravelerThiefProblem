@@ -13,9 +13,9 @@ public class Principal {
 
     private int tamanoPolacion = 100;
     private Individuo[] poblacion = new Individuo[tamanoPolacion];
-    private FuncionFitnetss funcionFitness;
+    private FuncionFitness funcionFitness;
 
-    public Principal(FuncionFitnetss funcionFitness) {
+    public Principal(FuncionFitness funcionFitness) {
         this.funcionFitness = funcionFitness;
     }
 
@@ -39,7 +39,7 @@ public class Principal {
                 }
             }
             poblacion[i] = new Individuo(genotipo);
-            poblacion[i].setFitnest(funcionFitness.calularFitntes(genotipo));
+            poblacion[i].setFitnest(funcionFitness.calcularFitness(genotipo));
             poblacion[i].setCosto(funcionFitness.calularCostos(genotipo));
         }
     }
@@ -88,7 +88,7 @@ public class Principal {
         Individuo[] hijosPotenciales;
         hijosPotenciales = porcentaje < 0.70 ? op.cruce(individuo1, individuo2) : op.mutacion(individuo1, individuo2);
         for (int i = 0; i < hijosPotenciales.length; i++) {
-            hijosPotenciales[i].setFitnest(funcionFitness.calularFitntes(hijosPotenciales[i].getGenotipo()));
+            hijosPotenciales[i].setFitnest(funcionFitness.calcularFitness(hijosPotenciales[i].getGenotipo()));
             hijosPotenciales[i].setCosto(funcionFitness.calularCostos(hijosPotenciales[i].getGenotipo()));
         }
         return hijosPotenciales;
@@ -123,8 +123,15 @@ public class Principal {
 
     public void start() {
         this.generarPoblacion();
+
         this.poblacion = this.seleccionToreno();
         this.poblacion = this.reemplazo();
-        System.out.println(buscarMejor().getCosto());
+        Individuo a = buscarMejor();
+        System.out.println(a.getCosto());
+        System.out.println(a.getFitnest());
+        for (int i = 0; i < a.getGenotipo().length; i++) {
+            System.out.print(a.getGenotipo()[i]);
+        }
+        System.out.println("");
     }
 }

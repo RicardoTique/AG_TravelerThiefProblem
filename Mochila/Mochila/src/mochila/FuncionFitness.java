@@ -9,19 +9,19 @@ package mochila;
  *
  * @author Ricardo Tique
  */
-public class FuncionFitnetss {
+public class FuncionFitness {
 
     private int volumenMochila;
     private int[] pesosMohcila;
     private int[] costos;
 
-    public FuncionFitnetss(int volumenMochila, int[] pesosMohcila, int[] costos) {
+    public FuncionFitness(int volumenMochila, int[] pesosMohcila, int[] costos) {
         this.volumenMochila = volumenMochila;
         this.pesosMohcila = pesosMohcila;
         this.costos = costos;
     }
 
-    public int calularFitntes(int[] genotipo) {
+    public int calcularFitness(int[] genotipo) {
         int fitnes = 0;
         for (int i = 0; i < genotipo.length; i++) {
             if (genotipo[i] == 1) {
@@ -29,7 +29,7 @@ public class FuncionFitnetss {
             }
         }
         if (fitnes > getVolumenMochila()) {
-            return 0;
+            return fitnes;
         } else {
             return fitnes;
         }
