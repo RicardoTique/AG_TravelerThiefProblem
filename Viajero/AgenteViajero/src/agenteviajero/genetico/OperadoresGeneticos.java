@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package agenteviajero;
+package agenteviajero.genetico;
+
+import agenteviajero.lista.*;
 
 /**
  *
@@ -13,13 +15,7 @@ public class OperadoresGeneticos {
 
     public Individuo[] cruce(Individuo individuo1, Individuo individuo2) {
         Individuo[] hijos = new Individuo[2];
-        int tamano = individuo1.getGenotipo().length;
 
-        int[] hijo1 = new int[tamano + 2];
-        int[] hijo2 = new int[tamano + 2];
-
-        hijos[0] = new Individuo(hijo1);
-        hijos[1] = new Individuo(hijo2);
         return hijos;
     }
 
@@ -41,26 +37,27 @@ public class OperadoresGeneticos {
         return hijos;
     }
 
-    public int[] generarVecinos(int[] genotipo1, int[] genotipo2) {
-        int[] vecinos = new int[genotipo1.length];
+    public Lista generarTablaAdyacencia(int[] genotipo1, int[] genotipo2) {
+        Lista tabla = new Lista();
+        int tamanoAux = genotipo1.length + 2;
+        int[] aux1 = new int[tamanoAux];
+        int[] aux2 = new int[tamanoAux];
 
-        int[] aux1 = new int[genotipo1.length + 2];
-        int[] aux2 = new int[genotipo1.length + 2];
-        aux1[0] = genotipo1[0];
-        aux1[genotipo1.length + 1] = genotipo1[genotipo1.length - 1];
-        aux2[0] = genotipo2[0];
-        aux2[genotipo1.length + 1] = genotipo2[genotipo2.length - 1];
+        aux1[0] = genotipo1[genotipo1.length - 1];
+        aux2[0] = genotipo2[genotipo2.length - 1];
+        aux1[aux1.length - 1] = genotipo1[0];
+        aux2[aux2.length - 1] = genotipo2[0];
+
         for (int i = 0; i < genotipo1.length; i++) {
             aux1[i + 1] = genotipo1[i];
             aux2[i + 1] = genotipo2[i];
         }
-        for (int i = 1; i <= genotipo1.length; i++) {
-            vecinos[aux1[i - 1]] += 1;
-            vecinos[aux1[i + 1]] += 1;
-            vecinos[aux2[i - 1]] += 1;
-            vecinos[aux2[i + 1]] += 1;
-        }
 
-        return vecinos;
+        for (int i = 1; i < tamanoAux - 1; i++) {
+            tabla.agregarNodo(aux1[i]);
+            
+        }
+        
+        return tabla;
     }
 }

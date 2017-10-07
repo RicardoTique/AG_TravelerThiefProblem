@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package agenteviajero;
+package agenteviajero.genetico;
 
 /**
  *
@@ -20,10 +20,7 @@ public class NewMain {
         int [] b ={2,3,5,5,1};
         OperadoresGeneticos op = new OperadoresGeneticos();
         
-        int []vecinos = op.generarVecinos(a, b);
-        for (int i = 0; i < vecinos.length; i++) {
-            System.out.println(vecinos[i]);
-        }
+        
     }
     
 }
