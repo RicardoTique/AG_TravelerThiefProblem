@@ -1,8 +1,15 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+# Project: Travelling Salesman Problem.
+#
+# Created by Ricardo Tique & Carlos Andres Sierra on Octuber 2017.
+# Copyright (c) 2017  Ricardo Tique & Carlos Andres Sierra. Corporacion Universitaria Minuto de Dios. All rights reserved.
+#
+# This file is part of GA_TravellingThiefProblem project.
+#
+# GA_TravellingThiefProblem is free software: you can redistribute it and/or modify it under the terms of the
+# GNU General Public License as published by the Free Software Foundation, version 2.
+*/
+
 package agenteviajero.lista;
 
 import java.util.ArrayList;

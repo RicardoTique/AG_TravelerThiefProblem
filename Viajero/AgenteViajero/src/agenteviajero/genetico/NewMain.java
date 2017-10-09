@@ -18,7 +18,7 @@ public class NewMain {
         // TODO code application logic here
         int [] a ={1,2,3,4,5};
         int [] b ={2,3,5,5,1};
-        OperadoresGeneticos op = new OperadoresGeneticos();
+        GeneticOperators op = new GeneticOperators();
         
         
     }
