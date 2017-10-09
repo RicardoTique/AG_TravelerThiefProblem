@@ -18,7 +18,7 @@ package agenteviajero.genetico;
  */
 public class Individual implements Cloneable {
 
-    private int [] genotype; 
+    private int [] genotype; //
     private int fitness; //
 
     
