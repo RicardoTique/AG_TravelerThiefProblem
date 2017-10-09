@@ -20,6 +20,12 @@ import agenteviajero.lista.*;
  */
 public class GeneticOperators {
 
+	/**
+	 * 
+	 * @param individuo1
+	 * @param individuo2
+	 * @return
+	 */
     public Individual[] cruce(Individual individuo1, Individual individuo2)
     {
         Individual[] hijos = new Individual[2];
@@ -28,6 +34,12 @@ public class GeneticOperators {
     }
 
     
+    /**
+     * 
+     * @param individuo1
+     * @param individuo2
+     * @return
+     */
     public Individual[] mutacion(Individual individuo1, Individual individuo2) 
     {
         int tamano = 0;

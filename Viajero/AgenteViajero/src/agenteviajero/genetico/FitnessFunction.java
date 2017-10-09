@@ -18,7 +18,7 @@ package agenteviajero.genetico;
  */
 public class FitnessFunction {
     
-    private int [][] coordenates;
+    private int [][] coordenates; //
 
     
     /**
