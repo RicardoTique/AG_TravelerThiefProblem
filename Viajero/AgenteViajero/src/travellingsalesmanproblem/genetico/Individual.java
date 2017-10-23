@@ -10,7 +10,9 @@
 # GNU General Public License as published by the Free Software Foundation, version 2.
 */
 
-package agenteviajero.genetico;
+package travellingsalesmanproblem.genetico;
+
+import java.util.Random;
 
 /**
  *
@@ -19,7 +21,7 @@ package agenteviajero.genetico;
 public class Individual implements Cloneable {
 
     private int [] genotype; //
-    private int fitness; //
+    private double fitness; //
 
     
     /**
@@ -29,10 +31,39 @@ public class Individual implements Cloneable {
     public Individual(int size) 
     {
         this.genotype = new int[size];
-        //TODO random permutation with twice step
-        //TODO calculate fitness
+        this.random_genotype(size);
     }
 
+    
+    
+    private void random_genotype(int size)
+    {
+    	Random rd = new Random();
+    	int swap, index; 
+    	
+    	for(int i = 0; i < size; i++)
+    		this.genotype[i] = (i + 1);
+    	
+    	for(int i = 0; i < size; i++)
+    	{
+    		index = rd.nextInt( size );
+    		
+    		swap = this.genotype[i];
+    		this.genotype[i] = this.genotype[index];
+    		this.genotype[index] = swap;
+    	}
+    	
+    	for(int i = size - 1; i >= 0; i--)
+    	{
+    		index = rd.nextInt( size );
+    		
+    		swap = this.genotype[i];
+    		this.genotype[i] = this.genotype[index];
+    		this.genotype[index] = swap;
+    	}
+    	
+    }
+    
     
     /**
      * 
@@ -48,7 +79,7 @@ public class Individual implements Cloneable {
      * 
      * @return
      */
-    public int getFitness() 
+    public double getFitness() 
     {
         return fitness;
     }
@@ -78,7 +109,7 @@ public class Individual implements Cloneable {
      * 
      * @param fitnest
      */
-    public void setFitness(int fitness) 
+    public void setFitness(double fitness) 
     {
         this.fitness = fitness;
     }
