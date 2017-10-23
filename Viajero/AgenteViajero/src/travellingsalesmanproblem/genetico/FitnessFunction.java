@@ -10,7 +10,7 @@
 # GNU General Public License as published by the Free Software Foundation, version 2.
 */
 
-package agenteviajero.genetico;
+package travellingsalesmanproblem.genetico;
 
 /**
  *
@@ -33,28 +33,28 @@ public class FitnessFunction {
     
     /**
      * 
-     * @param genotipo
+     * @param genotype
      * @return
      */
     public double calculate(int[] genotype)
     {
         int [] aux = new int[ genotype.length + 1 ];        
-        aux[aux.length-1] = genotype[0];
+        aux[aux.length - 1] = genotype[0];
         
         for (int i = 0; i < genotype.length; i++) 
         {
-            aux[i + 1] = genotype[i];
+            aux[i + 1] = genotype[i]; //TODO review this
         }
         
-        double respuesta = 0;
+        double response = 0;
         
         for (int i = 0; i < aux.length-1; i++) 
         {
             double x = coordenates[ aux[i+1] ][0] - coordenates[ aux[i] ][0];
             double y = coordenates[ aux[i+1] ][1] - coordenates[ aux[i] ][1];
-            respuesta += Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+            response += Math.sqrt( (x * x) + (y * y) );
         }
         
-        return respuesta;
+        return response;
     }
 }
