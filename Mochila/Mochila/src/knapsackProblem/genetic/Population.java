@@ -20,8 +20,8 @@ import java.util.Vector;
  */
 public class Population {
 
-    private int population_size = 100;
-    private int generations = 100;
+    private int population_size = 1000;
+    public int generations = 10000;
     private int products;
     public Vector<Individual> population;
     private FitnessFunction fitness_function;
@@ -35,46 +35,60 @@ public class Population {
         this.init_population();
 
         for (int i = 0; i < generations; i++) {
-            replacement = new Replacement(0);
             generation();
+            Individual best = this.bestSolution();
+            Individual worst = this.wortsSolution();
+            double promedio = 0;
+            for (int j = 0; j < population_size; j++) {
+                promedio += population.get(j).getFitness();
+            }
+            promedio/=population_size;
+            System.out.println(i + ";" + best.getFitness()+";"+worst.getFitness()+";"+promedio);
         }
+
     }
 
     private void init_population() {
         for (int i = 0; i < this.population_size; i++) {
             population.add(new Individual(this.products));
-            population.get(i).setFitness(fitness_function.calculate(population.get(i).getGenotype()));
-            population.get(i).setBenefit(fitness_function.calculateBenefit(population.get(i).getGenotype()));
+            population.get(i).setFitness(fitness_function.calculateFitness(population.get(i).getGenotype()));
+            //Si el peso da superior, debe invocar a reparacion, esto pasa si fitness == 0
+            while (population.get(i).getFitness() == -1) {
+                genetic_operators.repair(population.get(i), fitness_function);
+                population.get(i).setFitness(fitness_function.calculateFitness(population.get(i).getGenotype()));
+            }
         }
     }
 
     private void generation() {
-        Vector<Individual> next_generation = new Vector<Individual>();
+        Vector<Individual> next_generation = null;
+        next_generation = new Vector<Individual>();
         int[] indexes;
         Individual[] offsprings = new Individual[2];
-
+        
         for (int i = 0; i < (this.population_size / 2); i++) {
             indexes = selection_tournament();
-
-            if (Math.random() < 0.5) //Mutation
+            if (Math.random() < 0.40) //Mutation
             {
                 offsprings = genetic_operators.mutation(this.population.get(indexes[0]), this.population.get(indexes[1]));
             } else //Crossover
             {
                 offsprings = genetic_operators.crossover(this.population.get(indexes[0]), this.population.get(indexes[1]));
             }
-
-            offsprings[0].setFitness(fitness_function.calculate(offsprings[0].getGenotype()));
-            offsprings[0].setBenefit(fitness_function.calculateBenefit(offsprings[0].getGenotype()));
-            offsprings[1].setFitness(fitness_function.calculate(offsprings[1].getGenotype()));
-            offsprings[1].setBenefit(fitness_function.calculateBenefit(offsprings[1].getGenotype()));
-
+            for (int j = 0; j < 2; j++) {
+                offsprings[j].setFitness(fitness_function.calculateFitness(offsprings[j].getGenotype()));
+                while (offsprings[j].getFitness() == -1) {
+                    genetic_operators.repair(offsprings[j], fitness_function);
+                    offsprings[j].setFitness(fitness_function.calculateFitness(offsprings[j].getGenotype()));
+                }
+            }
             Individual[] winners = replacement.execute(this.population.get(indexes[0]), this.population.get(indexes[1]), offsprings);
             next_generation.add(winners[0]);
             next_generation.add(winners[1]);
         }
-
-        population = next_generation;
+        population = null; 
+        population =  next_generation;
+        System.gc();
     }
 
     private int[] selection_uniform() {
@@ -107,20 +121,23 @@ public class Population {
             return competitor_2;
         }
     }
+
     public Individual bestSolution() {
-        int indice;
-        Individual mejor = null;
-        for (indice = 0; indice < population_size; indice++) {
-            if (population.get(indice).getFitness()<= fitness_function.getVolumenMochila()) {
-                mejor = population.get(indice);
-                break;
+        Individual best = population.get(0);
+        for (int i = 1; i < this.population_size; i++) {
+            if (this.population.get(i).getFitness() > best.getFitness()) {
+                best = population.get(i);
             }
         }
-        for (int i = indice + 1; i < population_size; i++) {
-            if (population.get(i).getBenefit()> mejor.getBenefit()&& population.get(indice).getFitness()<= fitness_function.getVolumenMochila()) {
-                mejor = population.get(indice);
+        return best;
+    }
+    public Individual wortsSolution() {
+        Individual best = population.get(0);
+        for (int i = 1; i < this.population_size; i++) {
+            if (this.population.get(i).getFitness() < best.getFitness()) {
+                best = population.get(i);
             }
         }
-        return mejor;
-}
+        return best;
+    }
 }
