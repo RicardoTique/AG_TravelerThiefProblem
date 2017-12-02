@@ -21,8 +21,9 @@ public class Individual implements Cloneable {
 
     private int[] genotype;
     private int fitness;
-    private int benefit;
-
+    
+    public Individual(){}
+    
     public Individual(int tamano) {
         this.genotype = new int[tamano];
         this.random_genotype(tamano);
@@ -33,22 +34,8 @@ public class Individual implements Cloneable {
     }
 
     private void random_genotype(int size) {
-        Random rd = new Random();
-        int genes = rd.nextInt(size) + 1;
-        if (genes == size) {
-            for (int i = 0; i < size; i++) {
-                this.genotype[i] = 1;
-            }
-        } else {
-            for (int j = 0; j < genes; j++) {
-                int n = rd.nextInt(size);
-                if (this.genotype[n] == 0) {
-                    this.genotype[n] = 1;
-                } else {
-                    j--;
-                }
-            }
-        }
+        for(int i = 0;  i < size; i++)
+            this.genotype[i] = Math.random() > 0.5 ? 1 : 0;
     }
 
     public int getFitness() {
@@ -66,15 +53,8 @@ public class Individual implements Cloneable {
     public void setFitness(int fitnest) {
         this.fitness = fitnest;
     }
-
-    public int getBenefit() {
-        return benefit;
-    }
-
-    public void setBenefit(int benefit) {
-        this.benefit = benefit;
-    }
-
+    
+    
     public Object clone() {
         Object obj = null;
         try {
@@ -84,4 +64,5 @@ public class Individual implements Cloneable {
         }
         return obj;
     }
+
 }
