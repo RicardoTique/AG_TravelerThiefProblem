@@ -18,32 +18,38 @@ package knapsackProblem.genetic;
 public class GeneticOperators {
 
     public Individual[] crossover(Individual individuo1, Individual individuo2) {
+        
         Individual[] hijos = new Individual[2];
         int tamano = individuo1.getGenotype().length;
-        int[] hijo1 = new int[individuo1.getGenotype().length];
-        int[] hijo2 = new int[individuo2.getGenotype().length];
-        int indRecom = (int) (Math.random() * (tamano - 2)) + 1;
+        
+        int[] hijo1 = new int[tamano];
+        int[] hijo2 = new int[tamano];
+        
+        int indRecom = (int) (Math.random() * (tamano - 2)) + 1;        
         for (int i = 0; i < indRecom; i++) {
             hijo1[i] = individuo1.getGenotype()[i];
             hijo2[i] = individuo2.getGenotype()[i];
         }
+        
         for (int i = indRecom; i < tamano; i++) {
-            hijo1[i] = individuo1.getGenotype()[i];
-            hijo2[i] = individuo2.getGenotype()[i];
+            hijo1[i] = individuo2.getGenotype()[i];
+            hijo2[i] = individuo1.getGenotype()[i];
         }
+        
         hijos[0] = new Individual(hijo1);
         hijos[1] = new Individual(hijo2);
+        
         return hijos;
     }
 
     public Individual[] mutation(Individual individuo1, Individual individuo2) {
-        int tamano = 0;
+        int tamano = individuo1.getGenotype().length;
         Individual[] hijos = new Individual[2];
         hijos[0] = (Individual) individuo1.clone();
         hijos[1] = (Individual) individuo2.clone();
 
         for (int i = 0; i < 2; i++) {
-            int indice = (int) (Math.random() * (tamano));
+            int indice = (int) (Math.random() * (tamano));            
             if (hijos[i].getGenotype()[indice] == 0) {
                 hijos[i].getGenotype()[indice] = 1;
             } else {
@@ -52,5 +58,14 @@ public class GeneticOperators {
         }
 
         return hijos;
+    }
+
+    public void repair(Individual individual, FitnessFunction fitnessFunction) {                
+        for (int i = 0; i < individual.getGenotype().length; i++) {
+            if (individual.getGenotype()[fitnessFunction.orderBenefit[i][0]] ==1) {
+                individual.getGenotype()[fitnessFunction.orderBenefit[i][0]] = 0;
+                break;
+            }
+        }     
     }
 }
