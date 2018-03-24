@@ -24,10 +24,13 @@ public class FitnessFunction {
     private int[] packingTrace;
     private double vMax;
     private double vMin;
+    private double knapsackRent;
     public double[][] orderBenefit;
+    
 
     public FitnessFunction(double knapsackCapacity, double[] productsWeight,
-            double[] productsBenefit, double[][] distances, double vMax, double vMin) {
+            double[] productsBenefit, double[][] distances, double vMax, 
+            double vMin, double knapsackRent) {
         this.knapsackCapacity = knapsackCapacity;
         this.productsWeight = productsWeight;
         this.productsBenefit = productsBenefit;
@@ -50,10 +53,15 @@ public class FitnessFunction {
                 weight += this.productsWeight[packingTrace[i]];
             }
             double cV = this.vMax - (weight * aux);
-            double cTime = distances[genotype[i]][genotype[i + 1]];
-
+            time += (distances[genotype[i]][genotype[i + 1]]) / cV;
         }
-
+        benefit += this.productsBenefit[packingTrace[genotype.length - 1]];
+        weight += this.productsWeight[packingTrace[genotype.length - 1]];
+        double cV = this.vMax - (weight * aux);
+        time += (distances[genotype[genotype.length - 2]][genotype[genotype.length - 1]]) / cV;
+        fitness = benefit - (knapsackRent*time);
+        
+        
         return fitness;
     }
 
