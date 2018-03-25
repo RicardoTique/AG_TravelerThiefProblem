@@ -20,8 +20,8 @@ import java.util.Vector;
  */
 public class Population {
 
-    private int population_size = 1000;
-    public int generations = 10000;
+    private int population_size = 500;
+    public int generations = 1000;
     private int products;
     public Vector<Individual> population;
     private FitnessFunction fitness_function;
@@ -35,15 +35,7 @@ public class Population {
         this.init_population();
 
         for (int i = 0; i < generations; i++) {
-            generation();
-            Individual best = this.bestSolution();
-            Individual worst = this.wortsSolution();
-            double promedio = 0;
-            for (int j = 0; j < population_size; j++) {
-                promedio += population.get(j).getFitness();
-            }
-            promedio/=population_size;
-            System.out.println(i + ";" + best.getFitness()+";"+worst.getFitness()+";"+promedio);
+            generation();                        
         }
 
     }

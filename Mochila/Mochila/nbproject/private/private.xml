@@ -2,12 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/AG_TravelerThiefProblem/AG_TravelerThiefProblem/Mochila/Mochila/src/knapsackProblem/genetic/Individual.java</file>
-            <file>file:/D:/AG_TravelerThiefProblem/AG_TravelerThiefProblem/Mochila/Mochila/src/knapsackProblem/genetic/Main.java</file>
-            <file>file:/D:/AG_TravelerThiefProblem/AG_TravelerThiefProblem/Mochila/Mochila/src/knapsackProblem/genetic/Replacement.java</file>
-            <file>file:/D:/AG_TravelerThiefProblem/AG_TravelerThiefProblem/Mochila/Mochila/src/knapsackProblem/genetic/Population.java</file>
-            <file>file:/D:/AG_TravelerThiefProblem/AG_TravelerThiefProblem/Mochila/Mochila/src/knapsackProblem/genetic/FitnessFunction.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

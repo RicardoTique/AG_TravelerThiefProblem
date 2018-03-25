@@ -6,6 +6,7 @@
 package knapsackProblem.genetic;
 
 import java.util.Random;
+import knapsackProblem.io.ReadFile;
 
 /**
  *
@@ -18,74 +19,125 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        int[] c = {825594,
-            1677009,
-            1676628,
-            1523970,
-            943972,
-            97426,
-            69666,
-            1296457,
-            1679693,
-            1902996,
-            1844992,
-            1049289,
-            1252836,
-            1319836,
-            953277,
-            2067538,
-            675367,
-            853655,
-            1826027,
-            65731,
-            901489,
-            577243,
-            466257,
-            369261};
-        int[] v = {382745,
-            799601,
-            909247,
-            729069,
-            467902,
-            44328,
-            34610,
-            698150,
-            823460,
-            903959,
-            853665,
-            551830,
-            610856,
-            670702,
-            488960,
-            951111,
-            323046,
-            446298,
-            931161,
-            31385,
-            496951,
-            264724,
-            224916,
-            169684};
-        int b = 6404180;
-        int[] x = {0, 1, 1, 1, 0};
-        FitnessFunction funcionF = new FitnessFunction(b, v, c);
-        Population algot = new Population(funcionF);
-//        for (int i = 0; i < 100; i++) {
-//            System.out.println(algot.population.get(i).getBenefit() + " " + algot.population.get(i).getFitness());
-//        }        
-        int f = funcionF.calculate(x);
-        int f1 = funcionF.calculateBenefit(x);
-        System.out.println(f);
-        System.out.println(f1);
-        System.out.println("---");
-        Individual res = algot.bestSolution();
-        System.out.println(res.getFitness());
-        System.out.println(res.getBenefit());
-        for (int i = 0; i < res.getGenotype().length; i++) {
-            System.out.print(res.getGenotype()[i]);
-        }
-        System.out.println("");
+        ReadFile file = new ReadFile();
+        FitnessFunction funcionF = file.readFile("../DataSets/large_scale/knapPI_1_100_1000_1");
 
+        for (int i = 0; i < 30; i++) {
+            Population genetic = new Population(funcionF);
+            System.out.println(genetic.bestSolution().getFitness() +" "+genetic.wortsSolution() );
+            
+        }
+//        GeneticOperators g = new GeneticOperators();
+//        int[] a = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//        int[] b = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+//        Individual uno = new Individual(a);
+//        Individual dos = new Individual(b);
+//        Individual[] crossover = g.crossover(uno, dos);
+//        Individual[] mutation = g.mutation(uno, dos);
+//        for (int i = 0; i < 2; i++) {
+//            for (int j = 0; j < 10; j++) {
+//                System.out.print(crossover[i].getGenotype()[j]);
+//            }
+//            System.out.println("");
+//        }
+//        for (int i = 0; i < 2; i++) {
+//            for (int j = 0; j < 10; j++) {
+//                System.out.print(mutation[i].getGenotype()[j]);
+//            }
+//            System.out.println("");
+//        }
+
+
+        /* String[] dataSets = {
+            "low-dimensional/f1_l-d_kp_10_269",
+            "low-dimensional/f2_l-d_kp_20_878",
+            "low-dimensional/f3_l-d_kp_4_20",
+            "low-dimensional/f4_l-d_kp_4_11",
+           // "low-dimensional/f5_l-d_kp_15_375",
+            "low-dimensional/f6_l-d_kp_10_60",
+            "low-dimensional/f7_l-d_kp_7_50",
+            "low-dimensional/f8_l-d_kp_23_10000",
+            "low-dimensional/f9_l-d_kp_5_80",
+            "low-dimensional/f10_l-d_kp_20_879",
+            "large_scale/knapPI_1_100_1000_1",
+            "large_scale/knapPI_1_200_1000_1",
+            "large_scale/knapPI_1_500_1000_1",
+            "large_scale/knapPI_1_1000_1000_1",
+            "large_scale/knapPI_1_2000_1000_1",
+            "large_scale/knapPI_1_5000_1000_1",
+            "large_scale/knapPI_1_10000_1000_1",
+            "large_scale/knapPI_2_100_1000_1",
+            "large_scale/knapPI_2_200_1000_1",
+            "large_scale/knapPI_2_500_1000_1",
+            "large_scale/knapPI_2_1000_1000_1",
+            "large_scale/knapPI_2_2000_1000_1",
+            "large_scale/knapPI_2_5000_1000_1",
+            "large_scale/knapPI_2_10000_1000_1",
+            "large_scale/knapPI_3_100_1000_1",
+            "large_scale/knapPI_3_200_1000_1",
+            "large_scale/knapPI_3_500_1000_1",
+            "large_scale/knapPI_3_1000_1000_1",
+            "large_scale/knapPI_3_2000_1000_1",
+            "large_scale/knapPI_3_5000_1000_1",
+            "large_scale/knapPI_3_10000_1000_1"};
+        for (int i = 0;
+                i < dataSets.length;
+                i++) {
+            System.out.println("DataSet: " + dataSets[i]);
+            FitnessFunction funcionF = file.readFile("../DataSets/" + dataSets[i]);
+            double medBenefit = 0;
+            double medFitness = 0;
+            int[] benefit = new int[30];
+            int[] fitness = new int[30];
+            System.out.println("Volumen: " + funcionF.getKnapsackCapacity());
+            for (int j = 0; j < 30; j++) {
+                Population algot = new Population(funcionF);
+                Individual res = algot.bestSolution();
+//                benefit[j] = res.getBenefit();
+                fitness[j] = res.getFitness();
+  //              medBenefit = medBenefit + res.getBenefit();
+                medFitness = medFitness + res.getFitness();               
+            }
+            int benefitMin = benefit[0];
+            int fitnessMin = fitness[0];
+            int benefitMax = benefit[0];
+            int fitnessMax = fitness[0];
+            for (int j = 1; j < 30; j++) {
+                if (benefit[j] > benefitMax) {
+                    benefitMax = benefit[j];
+                }
+                if (benefit[j] < benefitMin) {
+                    benefitMin = benefit[j];
+                }
+                if (fitness[j] > fitnessMax) {
+                    fitnessMax = fitness[j];
+                }
+                if (fitness[j] < fitnessMin) {
+                    fitnessMin = fitness[j];
+                }
+            }
+            burbuja(fitness);
+            burbuja(benefit);
+            for (int j = 0; j < fitness.length; j++) {
+                System.out.println(fitness[j]+" "+benefit[i]);
+            }
+            System.out.println("Fitness Max: " + fitnessMax + " Fitness Min: " + fitnessMin + " Med Fitness: " + medFitness / 30);
+            System.out.println("Benefit Max: " + benefitMax + " Benefit Min: " + benefitMin + " Med Benefit: " + medBenefit / 30);
+            System.out.println("-----");
+        }
+
+    }
+    public static void burbuja(int[]matrix){
+        int temp;
+        for(int i=1;i < matrix.length;i++){
+            for (int j=0 ; j < matrix.length- 1; j++){
+                if (matrix[j] > matrix[j+1]){
+                    temp = matrix[j];
+                    matrix[j] = matrix[j+1];
+                    matrix[j+1] = temp;
+                }
+            }
+        }*/
     }
 
 }
