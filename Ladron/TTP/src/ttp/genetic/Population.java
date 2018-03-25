@@ -13,6 +13,7 @@ package ttp.genetic;
 
 import java.util.Random;
 import java.util.Vector;
+import ttp.data.Data;
 
 /**
  *
@@ -28,9 +29,9 @@ public class Population {
     private GeneticOperators genetic_operators = new GeneticOperators();
     private Replacement replacement = new Replacement(0);
 
-    public Population(FitnessFunction fitness_function) {
+    public Population(Data data) {
         this.products = fitness_function.getBenefit().length;
-        this.fitness_function = fitness_function;
+        this.fitness_function = new FitnessFunction(data);
         this.population = new Vector<Individual>();
         this.init_population();
 
@@ -40,6 +41,7 @@ public class Population {
 
     }
 
+    
     private void init_population() {
         for (int i = 0; i < this.population_size; i++) {
            

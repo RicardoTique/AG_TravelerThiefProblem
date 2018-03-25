@@ -11,6 +11,8 @@
  */
 package ttp.genetic;
 
+import ttp.data.Data;
+
 /**
  *
  * @author Ricardo Tique & Carlos Andres Sierra
@@ -21,26 +23,23 @@ public class FitnessFunction {
     private double[] productsWeight;
     private double[] productsBenefit;
     private double[][] distances;
-    private int[] packingTrace;
     private double vMax;
     private double vMin;
     private double knapsackRent;
     public double[][] orderBenefit;
-    
 
-    public FitnessFunction(double knapsackCapacity, double[] productsWeight,
-            double[] productsBenefit, double[][] distances, double vMax, 
-            double vMin, double knapsackRent) {
-        this.knapsackCapacity = knapsackCapacity;
-        this.productsWeight = productsWeight;
-        this.productsBenefit = productsBenefit;
-        this.distances = distances;
-        this.vMax = vMax;
-        this.vMin = vMin;
-        this.orderBenefit();
+    
+    public FitnessFunction(Data data){
+        this.distances = data.getDistances();
+        this.knapsackCapacity = data.getKnapsackCapacity();
+        this.knapsackRent = data.getKnapsackRent();
+        this.productsBenefit = data.getProductBenefits();
+        this.productsWeight = data.getProductWeights();
+        this.vMax = data.getVmax();
+        this.vMin = data.getVmin();
     }
 
-    public double calculateFitness(int[] genotype) {
+    public double calculateFitness(int[] genotype, int[] packingTrace) {
         double fitness = 0;
 
         double benefit = 0;
@@ -59,30 +58,9 @@ public class FitnessFunction {
         weight += this.productsWeight[packingTrace[genotype.length - 1]];
         double cV = this.vMax - (weight * aux);
         time += (distances[genotype[genotype.length - 2]][genotype[genotype.length - 1]]) / cV;
-        fitness = benefit - (knapsackRent*time);
-        
-        
+        fitness = benefit - (knapsackRent * time);
+
         return fitness;
-    }
-
-    private int calculateWeight() {
-        int weight = 0;
-        for (int i = 0; i < this.packingTrace.length; i++) {
-            if (this.packingTrace[i] != 0) {
-                weight += this.productsWeight[this.packingTrace[i]];
-            }
-        }
-        return weight;
-    }
-
-    private double calculateBenefit() {
-        double benefit = 0;
-        for (int i = 0; i < this.packingTrace.length; i++) {
-            if (this.packingTrace[i] != 0) {
-                benefit += this.productsBenefit[this.packingTrace[i]];
-            }
-        }
-        return benefit;
     }
 
     private void orderBenefit() {
