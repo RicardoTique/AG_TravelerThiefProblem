@@ -28,8 +28,7 @@ public class FitnessFunction {
     private double knapsackRent;
     public double[][] orderBenefit;
 
-    
-    public FitnessFunction(Data data){
+    public FitnessFunction(Data data) {
         this.distances = data.getDistances();
         this.knapsackCapacity = data.getKnapsackCapacity();
         this.knapsackRent = data.getKnapsackRent();
@@ -40,27 +39,32 @@ public class FitnessFunction {
     }
 
     public double calculateFitness(int[] genotype, int[] packingTrace) {
-        double fitness = 0;
-
-        double benefit = 0;
+        
+        double cBenefit = 0;
         double time = 0;
-        double weight = 0;
+        double cWeight = 0;
         double aux = (this.vMax - this.vMin) / this.knapsackCapacity;
+
+        //Calcular el beneficio y el peso de los items.        
+        for (int i = 0; i < genotype.length; i++) {
+            if (packingTrace[i] != 0) {
+                cBenefit += this.productsBenefit[packingTrace[i] - 1];
+            }
+        }
         for (int i = 0; i < genotype.length - 1; i++) {
             if (packingTrace[i] != 0) {
-                benefit += this.productsBenefit[packingTrace[i]];
-                weight += this.productsWeight[packingTrace[i]];
-            }
-            double cV = this.vMax - (weight * aux);
-            time += (distances[genotype[i]][genotype[i + 1]]) / cV;
+                cWeight += this.productsWeight[packingTrace[i] - 1];
+            }           
+            double cV = this.vMax - (cWeight * aux);
+            time += (distances[genotype[i] - 1][genotype[i + 1] - 1]) / cV;
         }
-        benefit += this.productsBenefit[packingTrace[genotype.length - 1]];
-        weight += this.productsWeight[packingTrace[genotype.length - 1]];
-        double cV = this.vMax - (weight * aux);
-        time += (distances[genotype[genotype.length - 2]][genotype[genotype.length - 1]]) / cV;
-        fitness = benefit - (knapsackRent * time);
+        if (packingTrace[genotype.length - 1] != 0) {
+            cWeight += this.productsWeight[packingTrace[genotype.length - 1] - 1];
+        }
+        double cV = this.vMax - (cWeight * aux);
+        time += (distances[genotype[0] - 1][genotype[genotype.length - 1] - 1]) / cV;
 
-        return fitness;
+        return cBenefit - (knapsackRent * time);
     }
 
     private void orderBenefit() {
