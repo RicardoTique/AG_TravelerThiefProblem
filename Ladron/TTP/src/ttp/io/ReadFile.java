@@ -54,7 +54,7 @@ public class ReadFile {
     }
 
     private Data buildFitness() {
-              
+
         int numCities = Integer.valueOf(this.information.get(0));
         int numItems = Integer.valueOf(this.information.get(1));
         double knapsackWeight = Double.valueOf(this.information.get(2));
@@ -67,21 +67,30 @@ public class ReadFile {
         double[] benefitProducts = new double[numItems];
         int index = 6;
         String[] temp;
+
+        for (int i = 0; i < numCities; i++) {
+            temp = this.information.get(index).split(" ");
+            for (int j = 0; j < numCities; j++) {
+                distances[index - 6][j] = Double.valueOf(temp[j]);
+            }
+            index++;
+        }
+
         while (index < numCities) {
             temp = this.information.get(index).split(" ");
             for (int j = 0; j < numCities; j++) {
-                distances[index][j] = Integer.valueOf(temp[j]);
+                distances[index - 6][j] = Double.valueOf(temp[j]);
             }
             index++;
         }
         temp = this.information.get(index).split(" ");
         for (int i = 0; i < numItems; i++) {
-            weightProducts[i] = Integer.valueOf(temp[i]);
+            weightProducts[i] = Double.valueOf(temp[i]);
         }
         index++;
         temp = this.information.get(index).split(" ");
         for (int i = 0; i < numItems; i++) {
-            benefitProducts[i] = Integer.valueOf(temp[i]);
+            benefitProducts[i] = Double.valueOf(temp[i]);
         }
         index++;
         int aux = index;
