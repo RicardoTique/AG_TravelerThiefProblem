@@ -21,7 +21,7 @@ import ttp.data.Data;
  */
 public class Population {
 
-    private int population_size = 500;
+    private int population_size = 1;
     public int generations = 1000;
     private int products;
     public Vector<Individual> population;
@@ -30,21 +30,48 @@ public class Population {
     private Replacement replacement = new Replacement(0);
 
     public Population(Data data) {
-        this.products = fitness_function.getBenefit().length;
         this.fitness_function = new FitnessFunction(data);
+        this.products = fitness_function.getBenefit().length;
         this.population = new Vector<Individual>();
-        this.init_population();
+        this.init_population(data);
 
-        for (int i = 0; i < generations; i++) {
-            generation();                        
-        }
-
+//        for (int i = 0; i < generations; i++) {
+//            generation();                        
+//        }
     }
 
-    
-    private void init_population() {
+    private void init_population(Data data) {
         for (int i = 0; i < this.population_size; i++) {
-           
+            population.add(new Individual(data.getNumCities(), data.getAvProducts(), data.getNumItems()));
+//
+//            System.out.println("");
+//            int a[] = {10, 3, 8, 4, 2, 6, 9, 1, 5, 7};
+//            int b[] = {1,1,0,1,0,0,3,0,1,0};
+//            for (int j = 0; j < data.getNumCities(); j++) {
+//                System.out.print(a[j] + " ");
+//            }
+//            System.out.println("");
+//            for (int j = 0; j < data.getNumCities(); j++) {
+//                System.out.print(b[j]+ " ");
+//            }System.out.println("");
+//            population.get(i).setFitness(fitness_function.calculateFitness(a,b));
+            
+//            
+//            for (int j = 0; j < data.getNumCities(); j++) {
+//                System.out.print(population.get(i).getGenotype()[j] + " ");
+//            }
+//            System.out.println("");
+//            for (int j = 0; j < data.getNumCities(); j++) {
+//                System.out.print(population.get(i).getPackingTrace()[j] + " ");
+//            }
+            population.get(i).setFitness(fitness_function.calculateFitness(
+                    population.get(i).getGenotype(), population.get(i).getPackingTrace()));
+            //System.out.println(population.get(i).getFitness());
+//            //Si el peso da superior, debe invocar a reparacion, esto pasa si fitness == 0
+//            while (population.get(i).getFitness() == -1) {
+//                genetic_operators.repair(population.get(i), fitness_function);
+//                population.get(i).setFitness(fitness_function.calculateFitness(population.get(i).getGenotype()));
+//            }
         }
     }
 
@@ -53,7 +80,7 @@ public class Population {
         next_generation = new Vector<Individual>();
         int[] indexes;
         Individual[] offsprings = new Individual[2];
-        
+
         for (int i = 0; i < (this.population_size / 2); i++) {
             indexes = selection_tournament();
             if (Math.random() < 0.40) //Mutation
@@ -64,18 +91,18 @@ public class Population {
                 offsprings = genetic_operators.crossover(this.population.get(indexes[0]), this.population.get(indexes[1]));
             }
             for (int j = 0; j < 2; j++) {
-             //   offsprings[j].setFitness(fitness_function.calculateFitness(offsprings[j].getGenotype()));
+                //   offsprings[j].setFitness(fitness_function.calculateFitness(offsprings[j].getGenotype()));
                 while (offsprings[j].getFitness() == -1) {
                     genetic_operators.repair(offsprings[j], fitness_function);
-               //     offsprings[j].setFitness(fitness_function.calculateFitness(offsprings[j].getGenotype()));
+                    //     offsprings[j].setFitness(fitness_function.calculateFitness(offsprings[j].getGenotype()));
                 }
             }
             Individual[] winners = replacement.execute(this.population.get(indexes[0]), this.population.get(indexes[1]), offsprings);
             next_generation.add(winners[0]);
             next_generation.add(winners[1]);
         }
-        population = null; 
-        population =  next_generation;
+        population = null;
+        population = next_generation;
         System.gc();
     }
 
@@ -119,6 +146,7 @@ public class Population {
         }
         return best;
     }
+
     public Individual wortsSolution() {
         Individual best = population.get(0);
         for (int i = 1; i < this.population_size; i++) {
