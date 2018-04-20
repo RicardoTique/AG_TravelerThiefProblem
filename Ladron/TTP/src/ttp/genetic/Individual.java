@@ -22,9 +22,11 @@ public class Individual implements Cloneable {
 
     private int[] genotype;
     private int[] packingTrace;
-    private int fitness;
+    private double fitness;
 
     public Individual() {
+        this.genotype = new int[10];
+        this.random_genotype(10);
     }
 
     public Individual(int size, int[][] productDispo, int productsSize) {
@@ -34,8 +36,8 @@ public class Individual implements Cloneable {
         this.random_packingTrace(size, productsSize, productDispo);
     }
 
-    public Individual(int[] genotipo) {
-        this.genotype = genotipo;
+    public Individual(int[] genotype) {
+        this.genotype = genotype;
     }
 
     private void random_genotype(int size) {
@@ -66,25 +68,26 @@ public class Individual implements Cloneable {
         int indexP;
         for (int i = 0; i < size; i++) {
             Vector<Integer> productsDispo = productsDispo(productDispo, productsSize, i);
-            if (productDispo.length != 0) {
-                indexP = rd.nextInt(productsDispo.size());
-                packingTrace[i]=productsDispo.get(indexP);
+            if (Math.random() > 0.5 ? true : false) {
+                if (productsDispo.size() != 0) {
+                    indexP = rd.nextInt(productsDispo.size());
+                    getPackingTrace()[i] = productsDispo.get(indexP);
+                }
             }
         }
-
     }
 
     private Vector<Integer> productsDispo(int[][] productsDispo, int productsSize, int index) {
         Vector<Integer> products = new Vector<Integer>();
         for (int i = 0; i < productsSize; i++) {
             if (productsDispo[i][index] != 0) {
-                products.add(i);
+                products.add(i+1);
             }
         }
         return products;
     }
 
-    public int getFitness() {
+    public double getFitness() {
         return fitness;
     }
 
@@ -96,7 +99,7 @@ public class Individual implements Cloneable {
         this.setGenotype(genotipo);
     }
 
-    public void setFitness(int fitnest) {
+    public void setFitness(double fitnest) {
         this.fitness = fitnest;
     }
 
@@ -108,6 +111,14 @@ public class Individual implements Cloneable {
             System.out.println(" no se puede duplicar");
         }
         return obj;
+    }
+
+    public int[] getPackingTrace() {
+        return packingTrace;
+    }
+
+    public void setPackingTrace(int[] packingTrace) {
+        this.packingTrace = packingTrace;
     }
 
 }
