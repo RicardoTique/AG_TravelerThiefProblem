@@ -11,46 +11,66 @@
  */
 package knapsackProblem.genetic;
 
+import knapsackProblem.data.Data;
+import unalcol.optimization.OptimizationFunction;
+import unalcol.types.collection.bitarray.BitArray;
+
 /**
  *
  * @author Ricardo Tique & Carlos Andres Sierra
  */
-public class FitnessFunction {
+public class Knapsack extends OptimizationFunction<BitArray> {
 
     private int knapsackCapacity;
     private int[] productsWeight;
     private int[] benefit;
     public int[][] orderBenefit;
 
-    public FitnessFunction(int knapsackCapacity, int[] productsWeight, int[] benefit) {
-        this.knapsackCapacity = knapsackCapacity;
-        this.productsWeight = productsWeight;
-        this.benefit = benefit;
+    public Knapsack(Data data) {
+        this.knapsackCapacity = data.getKnapsackCapacity();
+        this.productsWeight = data.getProductsWeight();
+        this.benefit = data.getBenefit();
         this.orderBenefit();
     }
 
-    public int calculateFitness(int[] genotype) {
-        int fitness = 0;
-        if (calculateWeight(genotype) <= knapsackCapacity) {
-            for (int i = 0; i < genotype.length; i++) {
-                if (genotype[i] == 1) {
+    @Override
+    public Double compute(BitArray genome) {
+        Double fitness = 0.0;
+        while(calculateWeight(genome) > knapsackCapacity){
+            repair(genome);
+        }
+        
+        if (calculateWeight(genome) <= knapsackCapacity) {
+            for (int i = 0; i < genome.size(); i++) {
+                if (genome.get(i)) {
                     fitness += this.benefit[i];
                 }
             }
-        }else{
-            fitness = -1;
+        } else {
+            fitness = -1.0;
         }
         return fitness;
     }
 
-    private int calculateWeight(int[] genotype) {
+    private int calculateWeight(BitArray genome) {
         int weight = 0;
-        for (int i = 0; i < genotype.length; i++) {
-            if (genotype[i] == 1) {
+        for (int i = 0; i < genome.size(); i++) {
+            if (genome.get(i)) {
                 weight += this.productsWeight[i];
             }
+
         }
+
         return weight;
+    }
+
+    private void repair(BitArray genome) {
+        for (int i = 0; i < genome.size(); i++) {
+            if (genome.get(this.orderBenefit[i][0])) {
+                genome.set(this.orderBenefit[i][0], false);
+                break;
+            }
+        }
     }
 
     private void orderBenefit() {

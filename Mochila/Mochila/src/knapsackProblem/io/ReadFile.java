@@ -16,13 +16,13 @@ package knapsackProblem.io;
 # GA_TravellingThiefProblem is free software: you can redistribute it and/or modify it under the terms of the
 # GNU General Public License as published by the Free Software Foundation, version 2.
  */
-import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import knapsackProblem.genetic.FitnessFunction;
+import knapsackProblem.data.Data;
+import knapsackProblem.genetic.Knapsack;
 
 /**
  *
@@ -34,8 +34,8 @@ public class ReadFile {
     private BufferedReader bufferedReader;
     private ArrayList<String> information;
 
-    public FitnessFunction readFile(String file) {
-        
+    public Data readFile(String file) {
+
         try {
             String line;
             this.fileReader = new FileReader(file);
@@ -45,15 +45,15 @@ public class ReadFile {
                 this.information.add(line);
             }
             bufferedReader.close();
-        } catch (FileNotFoundException  exception) {
+        } catch (FileNotFoundException exception) {
 
-        } catch (IOException exception){
-            
+        } catch (IOException exception) {
+
         }
-        return buildFitness();
+        return saveData();
     }
 
-    private FitnessFunction buildFitness() {
+    private Data saveData() {
         String[] temp = information.get(0).split(" ");
         int numberProducts = Integer.valueOf(temp[0]);
         int knapsackCapacity = Integer.valueOf(temp[1]);
@@ -64,6 +64,6 @@ public class ReadFile {
             benefit[i - 1] = Integer.valueOf(temp[0]);
             productsWeight[i - 1] = Integer.valueOf(temp[1]);
         }
-        return new FitnessFunction(knapsackCapacity, productsWeight, benefit);
+        return new Data(knapsackCapacity, numberProducts, productsWeight, benefit);
     }
 }
