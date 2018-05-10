@@ -12,12 +12,15 @@
 package ttp.genetic;
 
 import ttp.data.Data;
+import unalcol.optimization.OptimizationFunction;
+import unalcol.types.collection.Collection;
+import unalcol.types.collection.keymap.KeyValue;
 
 /**
  *
  * @author Ricardo Tique & Carlos Andres Sierra
  */
-public class FitnessFunction {
+public class TTP extends OptimizationFunction<TTP_Individual> {
 
     private double knapsackCapacity;
     private double[] productsWeight;
@@ -28,7 +31,7 @@ public class FitnessFunction {
     private double knapsackRent;
     public double[][] orderBenefit;
 
-    public FitnessFunction(Data data) {
+    public TTP(Data data) {
         this.distances = data.getDistances();
         this.knapsackCapacity = data.getKnapsackCapacity();
         this.knapsackRent = data.getKnapsackRent();
@@ -36,35 +39,44 @@ public class FitnessFunction {
         this.productsWeight = data.getProductWeights();
         this.vMax = data.getVmax();
         this.vMin = data.getVmin();
+        this.orderBenefit();
     }
+    @Override
+    public Double compute(TTP_Individual genome) {
 
-    public double calculateFitness(int[] genotype, int[] packingTrace) {
-        
         double cBenefit = 0;
         double time = 0;
         double cWeight = 0;
         double aux = (this.vMax - this.vMin) / this.knapsackCapacity;
-
-        //Calcular el beneficio y el peso de los items.        
-        for (int i = 0; i < genotype.length; i++) {
-            if (packingTrace[i] != 0) {
-                cBenefit += this.productsBenefit[packingTrace[i] - 1];
+        for (int i = 0; i < genome.size(); i++) {
+            System.out.print(genome.getCity(i) + " ");
+        }
+        System.out.println("--");
+//        for (int i = 0; i < genome.size(); i++) {
+//            System.out.print(genome.getProduct(i) + " ");
+//        }System.out.println("");
+        //Calcular el beneficio     
+        for (int i = 0; i < genome.size(); i++) {
+            if (genome.getProduct(i) != 0) {
+                cBenefit += this.productsBenefit[genome.getProduct(i) - 1];
             }
         }
-        for (int i = 0; i < genotype.length - 1; i++) {
-            if (packingTrace[i] != 0) {
-                cWeight += this.productsWeight[packingTrace[i] - 1];
-            }           
-            double cV = this.vMax - (cWeight * aux);
-            time += (distances[genotype[i] - 1][genotype[i + 1] - 1]) / cV;
+        
+        for (int i = 0; i < genome.size() - 1; i++) {
+            if (genome.getProduct(i) != 0) {
+                cWeight += this.productsWeight[genome.getProduct(i) - 1];
+            }
+            double cV = this.vMax - (cWeight * aux);            
+            time += (distances[genome.getCity(i) - 1][genome.getCity(i + 1) - 1]) / cV;
         }
-        if (packingTrace[genotype.length - 1] != 0) {
-            cWeight += this.productsWeight[packingTrace[genotype.length - 1] - 1];
+        if (genome.getProduct(genome.size() - 1) != 0) {
+            cWeight += this.productsWeight[genome.getProduct(genome.size() - 1) - 1];
         }
         double cV = this.vMax - (cWeight * aux);
-        time += (distances[genotype[0] - 1][genotype[genotype.length - 1] - 1]) / cV;
+        time += (distances[genome.getCity(0) - 1][genome.getCity(genome.size() - 1) - 1]) / cV;
 
         return cBenefit - (knapsackRent * time);
+
     }
 
     private void orderBenefit() {

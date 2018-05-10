@@ -22,7 +22,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import ttp.data.Data;
-import ttp.genetic.FitnessFunction;
+import ttp.genetic.TTP;
 
 /**
  *
