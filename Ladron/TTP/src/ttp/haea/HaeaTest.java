@@ -7,16 +7,12 @@ package ttp.haea;
 
 import ttp.data.Data;
 import ttp.genetic.TTP_Individual;
-import ttp.genetic.operators.mutation.Inversion_Mutation;
-import ttp.genetic.operators.mutation.Scramble_Mutation;
-import ttp.genetic.operators.mutation.Swap_Mutation;
 import ttp.io.ReadFile;
 import unalcol.Tagged;
 import unalcol.descriptors.WriteDescriptors;
 import unalcol.evolution.EAFactory;
 import unalcol.evolution.haea.HaeaOperators;
 import unalcol.evolution.haea.HaeaStep;
-import unalcol.evolution.haea.SimpleHaeaOperators;
 import unalcol.evolution.haea.SimpleHaeaOperatorsDescriptor;
 import unalcol.evolution.haea.WriteHaeaStep;
 import unalcol.optimization.OptimizationFunction;
@@ -80,11 +76,12 @@ public class HaeaTest {
     public static void run() {
         //Data Load
         ReadFile read = new ReadFile();
-        Data data = read.readFile("D:\\Informacion\\Desktop\\TTP1\\10\\10_3_1_25.txt");
+        Data data = read.readFile("D:\\Informacion\\Desktop\\TTP1\\10\\10_3_1_50.txt");
         //Space
-        Space<TTP_Individual> space = MethodTest.TTP_Space(data.getNumCities(), data.getNumItems());
+        Space<TTP_Individual> space = MethodTest.TTP_Space(data.getNumCities(),
+                data.getNumItems(), data.getKnapsackCapacity(), data.getAvProducts(), data.getProductWeights());
         //Function
-        OptimizationFunction<TTP_Individual> function = MethodTest.ttp_f(data);   
+        OptimizationFunction<TTP_Individual> function = MethodTest.ttp_f(data);
 //       
 //        TTP_Individual t = new TTP_Individual(data.getNumCities(), data.getNumItems());
 //        for (int i = 0; i < t.size(); i++) {
@@ -95,11 +92,7 @@ public class HaeaTest {
 //        }System.out.println("");
 //        System.out.println(function.apply(t));
         //Operators
-        Swap_Mutation swap_mutation = new Swap_Mutation();
-        Inversion_Mutation inversion_mutation = new Inversion_Mutation();
-        Scramble_Mutation scramble_mutation = new Scramble_Mutation();
-        HaeaOperators<TTP_Individual> operators = new SimpleHaeaOperators<TTP_Individual>(
-                swap_mutation,inversion_mutation,scramble_mutation);
+        HaeaOperators<TTP_Individual> operators = MethodTest.operators();
 
         // Search method
         int POPSIZE = 10;
@@ -107,16 +100,16 @@ public class HaeaTest {
         EAFactory<TTP_Individual> factory = new EAFactory<TTP_Individual>();
         PopulationSearch<TTP_Individual, Double> search
                 = factory.HAEA(POPSIZE, operators, new Tournament<TTP_Individual, Double>(function, 4), MAXITERS);
-        
-         search.setGoal(function);
-         
+
+        search.setGoal(function);
+
         // Apply the search method
         // Services
         ServicePool service = MethodTest.TTP_service(function, search);
         service.register(new SimpleHaeaOperatorsDescriptor<TTP_Individual>(), HaeaOperators.class);
         service.register(new WriteDescriptors<TTP_Individual>(), HaeaOperators.class);
         haea_service(function);
-        
+
         // Apply the search method
         Tagged<TTP_Individual> sol = search.solve(space);
         print_function(function);
