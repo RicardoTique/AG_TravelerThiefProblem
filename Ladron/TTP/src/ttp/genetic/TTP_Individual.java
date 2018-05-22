@@ -19,7 +19,7 @@ public class TTP_Individual implements Cloneable {
     private int p = 0; // Cantidad de productos en el conjunto de ciudades
 
     public TTP_Individual(int n, int p) {
-        
+
         this.n = n;
         this.p = p;
         this.route = new int[n];
@@ -63,6 +63,51 @@ public class TTP_Individual implements Cloneable {
             this.route[i] = this.route[index];
             this.route[index] = swap;
         }
+    }
+
+    public void removeNumbers(int[] numbers) {
+        for (int i = 0; i < numbers.length; i++) {
+            for (int j = 0; j < this.size(); j++) {
+                if (this.getCity(j) == numbers[i]) {
+                    this.setCity(j, 0);
+                }
+            }
+        }
+    }
+
+    public void slideLeft(int indice) {
+        for (int i = 0; i < indice; i++) {
+            if (this.getCity(i) == 0) {
+                for (int j = i + 1; j < this.size(); j++) {
+                    if (this.getCity(j) != 0) {
+                        this.setCity(i, this.getCity(j));
+                        this.setCity(j, 0);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void slideRight(int indice) {
+        for (int i = this.size() - 1; i > indice; i--) {
+            if (this.getCity(i) == 0) {
+                for (int j = i - 1; j >= 0; j--) {
+                    if (this.getCity(j) != 0) {
+                        this.setCity(i, this.getCity(j));
+                        this.setCity(j, 0);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void insertSubArray(int start, int end, int[] subArray) {
+        for (int i = start; i <= end; i++) {
+            this.setCity(i, subArray[i - start]);
+        }
+
     }
 
     private void random_products(int size, int p) {
