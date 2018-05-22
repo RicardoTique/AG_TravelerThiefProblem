@@ -17,8 +17,7 @@ import unalcol.services.MicroService;
 public class Scramble_Mutation extends MicroService<TTP_Individual> implements Variation_1_1<TTP_Individual> {
 
     public TTP_Individual apply(TTP_Individual gen) {
-        try {
-            
+        try {            
             TTP_Individual genome = new TTP_Individual(gen);
             int[] cutPoint = Utils.generateTwoRandomNumbers(gen.size());
             

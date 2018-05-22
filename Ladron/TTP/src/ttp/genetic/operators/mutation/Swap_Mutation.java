@@ -22,8 +22,7 @@ public class Swap_Mutation extends MicroService<TTP_Individual> implements Varia
 
         try {
             TTP_Individual genome = new TTP_Individual(gen);
-            int[] cutPoint = Utils.generateTwoRandomNumbers(gen.size());
-
+            int[] cutPoint = Utils.generateTwoRandomNumbers(gen.size());            
             //Intercambia la ciudad a y b
             int aux = genome.getCity(cutPoint[0]);
             genome.setCity(cutPoint[0], genome.getCity(cutPoint[1]));

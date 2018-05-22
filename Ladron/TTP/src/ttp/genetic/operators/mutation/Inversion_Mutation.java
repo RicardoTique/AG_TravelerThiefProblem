@@ -18,8 +18,7 @@ public class Inversion_Mutation extends MicroService<TTP_Individual> implements 
 
     @Override
     public TTP_Individual apply(TTP_Individual gen) {
-        try {
-
+        try {            
             TTP_Individual genome = new TTP_Individual(gen);
             int[] cutPoint = Utils.generateTwoRandomNumbers(gen.size());
             int k = cutPoint[1];
