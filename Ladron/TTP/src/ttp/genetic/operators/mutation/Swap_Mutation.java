@@ -6,6 +6,7 @@
 package ttp.genetic.operators.mutation;
 
 import ttp.genetic.TTP_Individual;
+import ttp.utils.Utils;
 import unalcol.search.variation.ParameterizedObject;
 import unalcol.search.variation.Variation_1_1;
 import unalcol.services.MicroService;
@@ -20,24 +21,17 @@ public class Swap_Mutation extends MicroService<TTP_Individual> implements Varia
     public TTP_Individual apply(TTP_Individual gen) {
 
         try {
-            TTP_Individual genome = new TTP_Individual(gen);            
-            int size = gen.size();
-            int a = (int) (Math.random() * (size));
-            int b = a;
-            
-            do {
-                b = (int) (Math.random() * (size));
-            } while (a == b);
+            TTP_Individual genome = new TTP_Individual(gen);
+            int[] cutPoint = Utils.generateTwoRandomNumbers(gen.size());
 
             //Intercambia la ciudad a y b
-            int aux = genome.getCity(a);
-            genome.setCity(a, genome.getCity(b));
-            genome.setCity(b, aux);
+            int aux = genome.getCity(cutPoint[0]);
+            genome.setCity(cutPoint[0], genome.getCity(cutPoint[1]));
+            genome.setCity(cutPoint[1], aux);
             //Intercambia el producto a y b
-            aux = genome.getProduct(a);
-            genome.setProduct(a, genome.getProduct(b));
-            genome.setProduct(b, aux);
-            System.out.println("Sw");
+            aux = genome.getProduct(cutPoint[0]);
+            genome.setProduct(cutPoint[0], genome.getProduct(cutPoint[1]));
+            genome.setProduct(cutPoint[1], aux);
             return genome;
 
         } catch (Exception e) {

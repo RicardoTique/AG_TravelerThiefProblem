@@ -6,6 +6,7 @@
 package ttp.genetic.operators.mutation;
 
 import ttp.genetic.TTP_Individual;
+import ttp.utils.Utils;
 import unalcol.search.variation.Variation_1_1;
 import unalcol.services.MicroService;
 
@@ -17,21 +18,12 @@ public class Scramble_Mutation extends MicroService<TTP_Individual> implements V
 
     public TTP_Individual apply(TTP_Individual gen) {
         try {
+            
             TTP_Individual genome = new TTP_Individual(gen);
-            int size = gen.size();
-            int a = (int) (Math.random() * (size));
-            int b = a;
-
-            do {
-                b = (int) (Math.random() * (size));
-            } while (a == b);
-            if (a > b) {
-                int aux = a;
-                a = b;
-                b = aux;
-            }
-            for (int i = a; i < b + 1; i++) {
-                int index = (int) (Math.random() * (b - a + 1) + a);
+            int[] cutPoint = Utils.generateTwoRandomNumbers(gen.size());
+            
+            for (int i = cutPoint[0]; i < cutPoint[1] + 1; i++) {
+                int index = (int) (Math.random() * (cutPoint[1] - cutPoint[0] + 1) + cutPoint[0]);
                 int city = genome.getCity(i);
                 int prod = genome.getProduct(i);
                 genome.setCity(i, genome.getCity(index));
@@ -40,7 +32,6 @@ public class Scramble_Mutation extends MicroService<TTP_Individual> implements V
                 genome.setProduct(index, prod);
 
             }
-            System.out.println("Sc");
             return genome;
 
         } catch (Exception e) {
