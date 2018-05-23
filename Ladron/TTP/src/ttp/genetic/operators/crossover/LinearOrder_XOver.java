@@ -24,23 +24,10 @@ public class LinearOrder_XOver extends MicroService<TTP_Individual> implements V
             int subSize = (cutPoint[1] - cutPoint[0]) + 1;
             offspring[0] = new TTP_Individual(child1);
             offspring[1] = new TTP_Individual(child2);
-            int[] subArray = new int[subSize];            
-            // Genera el primer hijo.
-            for (int j = 0; j < subSize; j++) {
-                subArray[j] = child2.getCity(j + cutPoint[0]);
-            }
-            offspring[0].removeNumbers(subArray);
-            offspring[0].slideLeft(cutPoint[0]);
-            offspring[0].slideRight(cutPoint[1]);
-            offspring[0].insertSubGenome(cutPoint[0], cutPoint[1], subArray);//            
-            //Genera el segundo hijo.
-            for (int j = 0; j < subSize; j++) {
-                subArray[j] = child1.getCity(j + cutPoint[0]);
-            }
-            offspring[1].removeNumbers(subArray);
-            offspring[1].slideLeft(cutPoint[0]);
-            offspring[1].slideRight(cutPoint[1]);
-            offspring[1].insertSubGenome(cutPoint[0], cutPoint[1], subArray);
+
+            this.construct(child2, offspring[0], subSize, cutPoint[0], cutPoint[1]);
+            this.construct(child1, offspring[1], subSize, cutPoint[0], cutPoint[1]);
+            
             return offspring;
 
         } catch (Exception e) {
@@ -50,4 +37,15 @@ public class LinearOrder_XOver extends MicroService<TTP_Individual> implements V
         return null;
     }
 
+    private void construct(TTP_Individual child, TTP_Individual offspring, int subSize, int cutPoint_a, int cutPoint_b) {
+        int[] subArray = new int[subSize];
+        // Genera el primer hijo.
+        for (int j = 0; j < subSize; j++) {
+            subArray[j] = child.getCity(j + cutPoint_a);
+        }
+        offspring.removeNumbers(subArray);
+        offspring.slideLeft(cutPoint_a);
+        offspring.slideRight(cutPoint_b);
+        offspring.insertSubGenome(cutPoint_a, cutPoint_b, subArray);// 
+    }
 }
