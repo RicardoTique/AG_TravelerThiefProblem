@@ -9,7 +9,9 @@ import ttp.data.Data;
 import ttp.genetic.TTP;
 import ttp.genetic.TTP_Individual;
 import ttp.genetic.TTP_Space;
+import ttp.genetic.operators.crossover.Cycle_XOver;
 import ttp.genetic.operators.crossover.LinearOrder_XOver;
+import ttp.genetic.operators.crossover.Order_XOver;
 import ttp.genetic.operators.mutation.Inversion_Mutation;
 import ttp.genetic.operators.mutation.Scramble_Mutation;
 import ttp.genetic.operators.mutation.Swap_Mutation;
@@ -83,11 +85,15 @@ public class MethodTest {
         service.register(new WriteDescriptors<Tagged[]>(), Tagged[].class);
         return service;
     }
-        public static SimpleHaeaOperators<TTP_Individual> operators(){
+
+    public static SimpleHaeaOperators<TTP_Individual> operators() {
         LinearOrder_XOver lox = new LinearOrder_XOver();
-        Swap_Mutation swap_mutation = new Swap_Mutation();
-        Inversion_Mutation inversion_mutation = new Inversion_Mutation();
-        Scramble_Mutation scramble_mutation = new Scramble_Mutation();
-        return new SimpleHaeaOperators<TTP_Individual>(lox,swap_mutation,inversion_mutation,scramble_mutation);
+        Order_XOver ox = new Order_XOver();
+        Cycle_XOver cx = new Cycle_XOver();
+        Swap_Mutation s_m = new Swap_Mutation();
+        Inversion_Mutation i_m = new Inversion_Mutation();
+        Scramble_Mutation sc_m = new Scramble_Mutation();
+
+        return new SimpleHaeaOperators<TTP_Individual>(cx, ox, sc_m, s_m, i_m, lox);
     }
 }

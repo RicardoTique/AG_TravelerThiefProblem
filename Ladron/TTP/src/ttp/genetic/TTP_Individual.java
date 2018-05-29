@@ -5,6 +5,7 @@
  */
 package ttp.genetic;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -18,14 +19,14 @@ public class TTP_Individual implements Cloneable {
     private int n = 0; // Cantidad de ciudades en el plan de robo.
     private int p = 0; // Cantidad de productos en el conjunto de ciudades
 
-    public TTP_Individual(int n, int p) {
+    public TTP_Individual(int n, int p, int[][] avItems) {
 
         this.n = n;
         this.p = p;
         this.route = new int[n];
         this.products = new int[n];
         this.random_rute(n);
-        this.random_products(n, p);
+        this.random_products(n, avItems);
 
     }
 
@@ -65,7 +66,7 @@ public class TTP_Individual implements Cloneable {
         }
     }
 
-    public void removeNumbers(int[] numbers) {
+    public void removeCity(int[] numbers) {
         for (int i = 0; i < numbers.length; i++) {
             for (int j = 0; j < this.size(); j++) {
                 if (this.getCity(j) == numbers[i]) {
@@ -75,8 +76,8 @@ public class TTP_Individual implements Cloneable {
         }
     }
 
-    public void slideLeft(int indice) {
-        for (int i = 0; i < indice; i++) {
+    public void slideLeft(int index) {
+        for (int i = 0; i < index; i++) {
             if (this.getCity(i) == 0) {
                 for (int j = i + 1; j < this.size(); j++) {
                     if (this.getCity(j) != 0) {
@@ -89,8 +90,8 @@ public class TTP_Individual implements Cloneable {
         }
     }
 
-    public void slideRight(int indice) {
-        for (int i = this.size() - 1; i > indice; i--) {
+    public void slideRight(int index) {
+        for (int i = this.size() - 1; i > index; i--) {
             if (this.getCity(i) == 0) {
                 for (int j = i - 1; j >= 0; j--) {
                     if (this.getCity(j) != 0) {
@@ -103,19 +104,71 @@ public class TTP_Individual implements Cloneable {
         }
     }
 
-    public void insertSubArray(int start, int end, int[] subArray) {
+    public void orderRight(int index) {
+        int j = 0;
+        for (int i = index + 1; i < this.size(); i++) {
+            if (this.getCity(i) == 0) {
+                while (j <= index) {
+                    if (this.getCity(j) != 0) {
+                        this.setCity(i, this.getCity(j));
+                        this.setCity(j, 0);
+                        break;
+                    }
+                    j++;
+                }
+            }
+        }
+    }
+
+    public void orderLeft(int index) {
+
+        for (int i = 0; i <= index; i++) {
+            if (this.getCity(i) == 0) {
+                int j = i + 1;
+                while (j <= index) {
+                    if (this.getCity(j) != 0) {
+                        this.setCity(i, this.getCity(j));
+                        this.setCity(j, 0);
+                        break;
+                    }
+                    j++;
+                }
+            }
+        }
+    }
+
+    public void insertSubGenome(int start, int end, int[] subGenome) {
         for (int i = start; i <= end; i++) {
-            this.setCity(i, subArray[i - start]);
+            this.setCity(i, subGenome[i - start]);
         }
 
     }
 
-    private void random_products(int size, int p) {
-        Random rd = new Random();
+    private void random_products(int size, int[][] itemsAv) {
         for (int i = 0; i < size; i++) {
-            this.products[i] = rd.nextInt(p + 1);
+            this.products[i] = getIdProduct(this.getCity(i), itemsAv);
         }
     }
+
+    private int getIdProduct(int city, int[][] itemsAv) {
+        ArrayList<Integer> itemsAv_City = new ArrayList<Integer>();
+
+        for (int i = 0; i < this.p; i++) {
+            if (itemsAv[i][city - 1] != 0) {
+                itemsAv_City.add(i + 1);
+            }
+        }
+        if (!itemsAv_City.isEmpty()) {
+            Random rd = new Random();
+            int in = rd.nextInt(itemsAv_City.size() + 1);
+            if (in != 0) {
+                return itemsAv_City.get(in - 1);
+            }
+        }
+        return 0;
+
+    }
+
 
     public int getCity(int i) {
         return route[i];

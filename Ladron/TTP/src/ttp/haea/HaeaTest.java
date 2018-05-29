@@ -7,6 +7,7 @@ package ttp.haea;
 
 import ttp.data.Data;
 import ttp.genetic.TTP_Individual;
+import ttp.genetic.operators.crossover.Cycle_XOver;
 import ttp.io.ReadFile;
 import unalcol.Tagged;
 import unalcol.descriptors.WriteDescriptors;
@@ -82,21 +83,12 @@ public class HaeaTest {
                 data.getNumItems(), data.getKnapsackCapacity(), data.getAvProducts(), data.getProductWeights());
         //Function
         OptimizationFunction<TTP_Individual> function = MethodTest.ttp_f(data);
-//       
-//        TTP_Individual t = new TTP_Individual(data.getNumCities(), data.getNumItems());
-//        for (int i = 0; i < t.size(); i++) {
-//            System.out.print(t.getCity(i)+" ");
-//        }System.out.println("");
-//        for (int i = 0; i < t.size(); i++) {
-//            System.out.print(t.getProduct(i)+" ");
-//        }System.out.println("");
-//        System.out.println(function.apply(t));
         //Operators
         HaeaOperators<TTP_Individual> operators = MethodTest.operators();
 
         // Search method
         int POPSIZE = 10;
-        int MAXITERS = 1;
+        int MAXITERS = 10;
         EAFactory<TTP_Individual> factory = new EAFactory<TTP_Individual>();
         PopulationSearch<TTP_Individual, Double> search
                 = factory.HAEA(POPSIZE, operators, new Tournament<TTP_Individual, Double>(function, 4), MAXITERS);
@@ -112,10 +104,10 @@ public class HaeaTest {
 
         // Apply the search method
         Tagged<TTP_Individual> sol = search.solve(space);
-        print_function(function);
+//        print_function(function);
     }
 
     public static void main(String[] args) {
-        run();
+         run();     
     }
 }

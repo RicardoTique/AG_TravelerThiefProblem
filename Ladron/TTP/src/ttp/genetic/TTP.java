@@ -13,8 +13,6 @@ package ttp.genetic;
 
 import ttp.data.Data;
 import unalcol.optimization.OptimizationFunction;
-import unalcol.types.collection.Collection;
-import unalcol.types.collection.keymap.KeyValue;
 
 /**
  *
@@ -47,15 +45,7 @@ public class TTP extends OptimizationFunction<TTP_Individual> {
         double cBenefit = 0;
         double time = 0;
         double cWeight = 0;
-        double aux = (this.vMax - this.vMin) / this.knapsackCapacity;
-        for (int i = 0; i < genome.size(); i++) {
-            System.out.print(genome.getCity(i) + " ");
-        }
-        System.out.println("--");
-//        for (int i = 0; i < genome.size(); i++) {
-//            System.out.print(genome.getProduct(i) + " ");
-//        }System.out.println("");
-        //Calcular el beneficio     
+        double aux = (this.vMax - this.vMin) / this.knapsackCapacity; 
         for (int i = 0; i < genome.size(); i++) {
             if (genome.getProduct(i) != 0) {
                 cBenefit += this.productsBenefit[genome.getProduct(i) - 1];
@@ -76,7 +66,6 @@ public class TTP extends OptimizationFunction<TTP_Individual> {
         time += (distances[genome.getCity(0) - 1][genome.getCity(genome.size() - 1) - 1]) / cV;
 
         return cBenefit - (knapsackRent * time);
-
     }
 
     private void orderBenefit() {
