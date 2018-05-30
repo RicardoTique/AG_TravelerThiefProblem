@@ -41,7 +41,9 @@ public class Cycle_XOver extends MicroService<TTP_Individual> implements Variati
 
             for (int i = 0; i < index_cycle.size() - 1; i++) {
                 offspring[0].setCity(index_cycle.get(i), child2.getCity(index_cycle.get(i)));
+                offspring[0].setProduct(index_cycle.get(i), child2.getProduct(index_cycle.get(i)));
                 offspring[1].setCity(index_cycle.get(i), child1.getCity(index_cycle.get(i)));
+                offspring[1].setProduct(index_cycle.get(i), child1.getProduct(index_cycle.get(i)));
             }
             return offspring;
 
