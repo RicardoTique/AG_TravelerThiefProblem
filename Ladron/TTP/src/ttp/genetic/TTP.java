@@ -39,24 +39,25 @@ public class TTP extends OptimizationFunction<TTP_Individual> {
         this.vMin = data.getVmin();
         this.orderBenefit();
     }
+
     @Override
     public Double compute(TTP_Individual genome) {
 
         double cBenefit = 0;
         double time = 0;
         double cWeight = 0;
-        double aux = (this.vMax - this.vMin) / this.knapsackCapacity; 
+        double aux = (this.vMax - this.vMin) / this.knapsackCapacity;
         for (int i = 0; i < genome.size(); i++) {
             if (genome.getProduct(i) != 0) {
                 cBenefit += this.productsBenefit[genome.getProduct(i) - 1];
             }
         }
-        
+
         for (int i = 0; i < genome.size() - 1; i++) {
             if (genome.getProduct(i) != 0) {
                 cWeight += this.productsWeight[genome.getProduct(i) - 1];
             }
-            double cV = this.vMax - (cWeight * aux);            
+            double cV = this.vMax - (cWeight * aux);
             time += (distances[genome.getCity(i) - 1][genome.getCity(i + 1) - 1]) / cV;
         }
         if (genome.getProduct(genome.size() - 1) != 0) {
@@ -64,8 +65,8 @@ public class TTP extends OptimizationFunction<TTP_Individual> {
         }
         double cV = this.vMax - (cWeight * aux);
         time += (distances[genome.getCity(0) - 1][genome.getCity(genome.size() - 1) - 1]) / cV;
-
-        return cBenefit - (knapsackRent * time);
+        double result = cBenefit - (knapsackRent * time);
+        return (result > 0) ? result : 0;
     }
 
     private void orderBenefit() {
@@ -77,38 +78,38 @@ public class TTP extends OptimizationFunction<TTP_Individual> {
         orderMethot(this.orderBenefit, 0, this.productsBenefit.length - 1);
     }
 
-    private void orderMethot(double[][] vector, int izquierda, int derecha) {
-        double indicePivote = vector[izquierda][0];
-        double pivote = vector[izquierda][1];
-        int i = izquierda;
-        int j = derecha;
+    private void orderMethot(double[][] array, int left, int right) {
+        double indicePivote = array[left][0];
+        double pivote = array[left][1];
+        int i = left;
+        int j = right;
         double auxIndice;
         double auxPeso;
         while (i < j) {
-            while (vector[i][1] <= pivote && i < j) {
+            while (array[i][1] <= pivote && i < j) {
                 i++;
             }
-            while (vector[j][1] > pivote) {
+            while (array[j][1] > pivote) {
                 j--;
             }
             if (i < j) {
-                auxIndice = vector[i][0];
-                auxPeso = vector[i][1];
-                vector[i][0] = vector[j][0];
-                vector[i][1] = vector[j][1];
-                vector[j][0] = auxIndice;
-                vector[j][1] = auxPeso;
+                auxIndice = array[i][0];
+                auxPeso = array[i][1];
+                array[i][0] = array[j][0];
+                array[i][1] = array[j][1];
+                array[j][0] = auxIndice;
+                array[j][1] = auxPeso;
             }
         }
-        vector[izquierda][0] = vector[j][0];
-        vector[izquierda][1] = vector[j][1];
-        vector[j][0] = indicePivote;
-        vector[j][1] = pivote;
-        if (izquierda < j - 1) {
-            orderMethot(vector, izquierda, j - 1);
+        array[left][0] = array[j][0];
+        array[left][1] = array[j][1];
+        array[j][0] = indicePivote;
+        array[j][1] = pivote;
+        if (left < j - 1) {
+            orderMethot(array, left, j - 1);
         }
-        if (j + 1 < derecha) {
-            orderMethot(vector, j + 1, derecha);
+        if (j + 1 < right) {
+            orderMethot(array, j + 1, right);
         }
     }
 

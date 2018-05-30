@@ -87,8 +87,8 @@ public class HaeaTest {
         HaeaOperators<TTP_Individual> operators = MethodTest.operators();
 
         // Search method
-        int POPSIZE = 10;
-        int MAXITERS = 10;
+        int POPSIZE = 450;
+        int MAXITERS = 250;
         EAFactory<TTP_Individual> factory = new EAFactory<TTP_Individual>();
         PopulationSearch<TTP_Individual, Double> search
                 = factory.HAEA(POPSIZE, operators, new Tournament<TTP_Individual, Double>(function, 4), MAXITERS);

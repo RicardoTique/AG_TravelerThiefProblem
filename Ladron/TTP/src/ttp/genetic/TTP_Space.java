@@ -6,6 +6,7 @@
 package ttp.genetic;
 
 import java.util.Random;
+import ttp.utils.Order_Methods;
 import unalcol.search.space.Space;
 import unalcol.services.MicroService;
 
@@ -31,8 +32,8 @@ public class TTP_Space extends MicroService<TTP_Individual> implements Space<TTP
     }
 
     @Override
-    public boolean feasible(TTP_Individual x) {
-        return productAvailabity(x) && productWeight(x);
+    public boolean feasible(TTP_Individual genome) {
+        return productAvailabity(genome) && productWeight(genome);
     }
 
     @Override
@@ -51,13 +52,12 @@ public class TTP_Space extends MicroService<TTP_Individual> implements Space<TTP
 //            System.out.print(genome.getProduct(i) + " ");
 //        }
 //        System.out.println("");
-//        if (!productAvailabity(genome)) {
-//            this.repairAvailability(genome);            
-//        }
-//        if (!productWeight(genome)) {
-//            System.out.println("p");
-//            this.repairAvailability(genome);
-//        }
+        if (!productAvailabity(genome)) {            
+            this.repairAvailability(genome);
+        }
+        if (!productWeight(genome)) {
+            this.repairWeight(genome);
+        }
 //        for (int i = 0; i < genome.size(); i++) {
 //            System.out.print(genome.getProduct(i) + " ");
 //        }
@@ -70,20 +70,20 @@ public class TTP_Space extends MicroService<TTP_Individual> implements Space<TTP
         return new TTP_Individual(numberCitys, numberItems, avaibleProdCity);
     }
 
-    private boolean productWeight(TTP_Individual x) {
+    private boolean productWeight(TTP_Individual genome) {
         double weight = 0;
-        for (int i = 0; i < x.size(); i++) {
-            if (x.getProduct(i) != 0) {
-                weight += productsWeight[x.getProduct(i) - 1];
+        for (int i = 0; i < genome.size(); i++) {
+            if (genome.getProduct(i) != 0) {
+                weight += productsWeight[genome.getProduct(i) - 1];
             }
         }
         return weight <= knapsackCapacity;
     }
 
-    private boolean productAvailabity(TTP_Individual x) {
-        for (int i = 0; i < x.size(); i++) {
-            if (x.getProduct(i) != 0) {
-                if (avaibleProdCity[x.getProduct(i) - 1][x.getCity(i) - 1] == 0) {
+    private boolean productAvailabity(TTP_Individual genome) {
+        for (int i = 0; i < genome.size(); i++) {
+            if (genome.getProduct(i) != 0) {
+                if (avaibleProdCity[genome.getProduct(i) - 1][genome.getCity(i) - 1] == 0) {
                     return false;
                 }
             }
@@ -92,37 +92,62 @@ public class TTP_Space extends MicroService<TTP_Individual> implements Space<TTP
     }
 
     private void repairAvailability(TTP_Individual genome) {
-        double [][] wegiht_aux = new double[genome.size()][2];
-        
         for (int i = 0; i < genome.size(); i++) {
-            wegiht_aux[i][0] = i;
-            wegiht_aux[i][1] =(genome.getProduct(i)==0)?0:this.productsWeight[genome.getProduct(i)-1];
+            if (genome.getProduct(i) != 0) {
+                genome.setProduct(i, av_product(genome.getCity(i), genome.getProduct(i)));
+            }
         }
     }
 
     private int av_product(int city, int item) {
-        if (this.avaibleProdCity[item - 1][city - 1] == 0) {
-            Random rd = new Random();
-            int aux = 0;
-            for (int i = 0; i < numberItems; i++) {
-                if (this.avaibleProdCity[i][city - 1] != 0) {
-                    aux += 1;
-                }
-            }
-            if (aux != 0) {
-                aux = item;
-                do {
-                    aux = rd.nextInt(numberItems) + 1;
-                } while (this.avaibleProdCity[aux - 1][city - 1] == 0);
-                return aux;
-            } else {
-                return 0;
+
+        int aux = 0;
+        for (int i = 0; i < numberItems; i++) {
+            if (this.avaibleProdCity[i][city - 1] != 0) {
+                aux += 1;
             }
         }
-        return item;
+        if (aux != 0) {
+            Random rd = new Random();
+            aux = item;
+            do {
+                aux = rd.nextInt(numberItems) + 1;
+            } while (this.avaibleProdCity[aux - 1][city - 1] == 0);
+            return aux;
+        } else {
+            return 0;
+        }
+
     }
 
-    private void repairWight(TTP_Individual genome) {
+    private void repairWeight(TTP_Individual genome) {
+        double[][] weight_aux = new double[genome.size()][2];
+
+        do {
+            for (int i = 0; i < genome.size(); i++) {
+                weight_aux[i][0] = i;
+                weight_aux[i][1] = (genome.getProduct(i) == 0) ? 0 : this.productsWeight[genome.getProduct(i) - 1];
+            }
+            Order_Methods.sort(weight_aux, 0, genome.size() - 1);
+            genome.setProduct((int) weight_aux[0][0], minor_product(genome.getCity((int) weight_aux[0][0]), weight_aux[0][1]));
+        } while (!this.productWeight(genome));
+    }
+
+    private int minor_product(int city, double prod_weight) {
+        int aux = 0;
+        for (int i = 0; i < numberItems; i++) {
+            if (this.avaibleProdCity[i][city - 1] != 0) {
+                aux += 1;
+            }
+        }
+        if (aux > 1) {
+            for (int i = 0; i < numberItems; i++) {
+                if (this.avaibleProdCity[i][city - 1] != 0 && productsWeight[i] < prod_weight) {
+                    return i + 1;
+                }
+            }
+        }
+        return 0;
 
     }
 }
