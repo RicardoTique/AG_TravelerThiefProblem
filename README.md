@@ -32,8 +32,7 @@ Este git se encuentra dividido en tres carpetas Viajero, Mochila y Ladron. Dentr
 ----------------
 #### License
 
-Creado por Brayan Ricardo Tique O. y Carlos Sierra el 10 de Agosto 2018 Copyright (c) 2018 Ricardo Tique, Carlos Sierra. All rights reserved.
-
+Creado por Brayan Ricardo Tique O. y Carlos Sierra el 10 de Agosto 2018 Copyright (c) 2018 Ricardo Tique, Carlos Sierra. Todos los derechos reservados.
 
 AG_TravelerThiefProblem is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by # the Free Software Foundation, version 2.
 
