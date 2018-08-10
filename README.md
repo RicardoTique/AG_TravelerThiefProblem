@@ -15,7 +15,7 @@ Este git contiene el software de los problemas del agente viajero, de la mochila
 #### Organización
 
 Este git se encuentra dividido en tres carpetas Travelling_Thief_Problem, Travelling_Salesman_Problem y Knapsack_Problem. 
-Dentro de cada una de ellas se encuentran dos carpetas Code y Dataset. La carpeta "Code" contiene el codigo fuente y la carpeta "Dataset" contiene el conjunto de datos utilizados.
+Dentro de cada una de ellas se encuentran dos carpetas Code y Dataset. La carpeta "Code" contiene el codigo fuente y la carpeta "Dataset" contiene el conjunto de datos de prueba utilizados.
 
 ----------------
 #### Requerimientos
