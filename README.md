@@ -28,5 +28,12 @@ Este git se encuentra dividido en tres carpetas Viajero, Mochila y Ladron. Dentr
 #### Instalación
 
 * Se debe realizar la descarga de las librerias de HAEA.
-* Usando el entorno de desarrollo se debe realiar 
+* Usando el entorno de desarrollo preferido se debe realizar la descarga del codigo fuente. 
+----------------
+#### License
+
+Creado por Brayan Ricardo Tique O. y Carlos Sierra el 10 de Agosto 2018 Copyright (c) 2018 Ricardo Tique, Carlos Sierra. All rights reserved.
+
+
+AG_TravelerThiefProblem is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by # the Free Software Foundation, version 2.
 
