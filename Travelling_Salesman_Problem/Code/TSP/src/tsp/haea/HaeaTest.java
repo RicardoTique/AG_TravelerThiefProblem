@@ -85,7 +85,7 @@ public class HaeaTest {
         haea_service(function);
 
         // Apply the search method
- //       search.solve(space);
+        search.solve(space);
 //        print_function(function);
     }
 
