@@ -7,16 +7,12 @@ package tsp.genetic;
 
 import tsp.genetic.TSP_Individual;
 import unalcol.search.space.Space;
-import unalcol.services.MicroService;
-import unalcol.types.collection.Collection;
-import unalcol.types.collection.keymap.KeyValue;
-
 
 /**
  *
  * @author Ricardo Tique
  */
-public class TSP_Space extends MicroService<TSP_Individual> implements Space<TSP_Individual>{
+public class TSP_Space implements Space<TSP_Individual>{
     protected int size;
     
     public TSP_Space(int size){
@@ -41,8 +37,5 @@ public class TSP_Space extends MicroService<TSP_Individual> implements Space<TSP
     public TSP_Individual pick() {
         return new TSP_Individual(size);
     }
-
-
-    
     
 }

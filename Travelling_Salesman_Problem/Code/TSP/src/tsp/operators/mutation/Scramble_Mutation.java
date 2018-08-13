@@ -8,13 +8,12 @@ package tsp.operators.mutation;
 import tsp.genetic.TSP_Individual;
 import tsp.utils.Utils;
 import unalcol.search.variation.Variation_1_1;
-import unalcol.services.MicroService;
 
 /**
  *
  * @author Ricardo Tique
  */
-public class Scramble_Mutation extends MicroService<TSP_Individual> implements Variation_1_1<TSP_Individual> {
+public class Scramble_Mutation implements Variation_1_1<TSP_Individual> {
 
     public TSP_Individual apply(TSP_Individual gen) {
         try {

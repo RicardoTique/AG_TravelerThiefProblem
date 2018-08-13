@@ -8,13 +8,12 @@ package tsp.operators.xover;
 import tsp.genetic.TSP_Individual;
 import tsp.utils.Utils;
 import unalcol.search.variation.Variation_2_2;
-import unalcol.services.MicroService;
 
 /**
  *
  * @author Ricardo Tique
  */
-public class LinearOrder_XOver extends MicroService<TSP_Individual> implements Variation_2_2<TSP_Individual> {
+public class LinearOrder_XOver implements Variation_2_2<TSP_Individual> {
 
     @Override
     public TSP_Individual[] apply(TSP_Individual child1, TSP_Individual child2) {
