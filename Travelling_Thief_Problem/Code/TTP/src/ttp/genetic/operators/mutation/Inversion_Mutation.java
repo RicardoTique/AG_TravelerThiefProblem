@@ -8,13 +8,12 @@ package ttp.genetic.operators.mutation;
 import ttp.genetic.TTP_Individual;
 import ttp.utils.Utils;
 import unalcol.search.variation.Variation_1_1;
-import unalcol.services.MicroService;
 
 /**
  *
  * @author Ricardo Tique
  */
-public class Inversion_Mutation extends MicroService<TTP_Individual> implements Variation_1_1<TTP_Individual> {
+public class Inversion_Mutation implements Variation_1_1<TTP_Individual> {
 
     @Override
     public TTP_Individual apply(TTP_Individual gen) {

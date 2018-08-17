@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/agents.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/awtgui.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/core.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/data.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/defs.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/demo.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/evolution.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/funpl.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/gui.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/langcore.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/math.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/mysql-connector-java-5.1.37-bin.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/optimization.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/primitives.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/random.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/reflection.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/rsyntaxtextarea-3.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/services.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/types.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/vc.jar"/>
+	<classpathentry kind="lib" path="D:/Git/unalcol/libs/vcl.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

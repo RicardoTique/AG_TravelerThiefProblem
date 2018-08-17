@@ -8,13 +8,12 @@ package ttp.genetic;
 import java.util.Random;
 import ttp.utils.Order_Methods;
 import unalcol.search.space.Space;
-import unalcol.services.MicroService;
 
 /**
  *
  * @author Ricardo Tique
  */
-public class TTP_Space extends MicroService<TTP_Individual> implements Space<TTP_Individual> {
+public class TTP_Space implements Space<TTP_Individual> {
 
     protected int numberCitys;
     protected int numberItems;

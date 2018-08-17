@@ -8,13 +8,12 @@ package ttp.genetic.operators.crossover;
 import java.util.ArrayList;
 import ttp.genetic.TTP_Individual;
 import unalcol.search.variation.Variation_2_2;
-import unalcol.services.MicroService;
 
 /**
  *
  * @author Ricardo Tique
  */
-public class Cycle_XOver extends MicroService<TTP_Individual> implements Variation_2_2<TTP_Individual> {
+public class Cycle_XOver implements Variation_2_2<TTP_Individual> {
 
     @Override
     public TTP_Individual[] apply(TTP_Individual child1, TTP_Individual child2) {

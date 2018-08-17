@@ -190,7 +190,8 @@ public class TTP_Individual implements Cloneable {
         return n;
     }
 
-    public Object clone() {
+    @Override
+	public Object clone() {
         return new TTP_Individual(this);
     }
 }

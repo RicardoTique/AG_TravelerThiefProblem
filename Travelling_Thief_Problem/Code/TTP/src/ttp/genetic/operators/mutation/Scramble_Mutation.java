@@ -8,15 +8,15 @@ package ttp.genetic.operators.mutation;
 import ttp.genetic.TTP_Individual;
 import ttp.utils.Utils;
 import unalcol.search.variation.Variation_1_1;
-import unalcol.services.MicroService;
 
 /**
  *
  * @author Ricardo Tique
  */
-public class Scramble_Mutation extends MicroService<TTP_Individual> implements Variation_1_1<TTP_Individual> {
+public class Scramble_Mutation implements Variation_1_1<TTP_Individual> {
 
-    public TTP_Individual apply(TTP_Individual gen) {
+    @Override
+	public TTP_Individual apply(TTP_Individual gen) {
         try {            
             TTP_Individual genome = new TTP_Individual(gen);
             int[] cutPoint = Utils.generateTwoRandomNumbers(gen.size());

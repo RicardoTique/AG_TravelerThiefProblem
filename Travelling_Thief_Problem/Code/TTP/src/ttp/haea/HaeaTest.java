@@ -5,11 +5,10 @@
  */
 package ttp.haea;
 
+import ttp.haea.MethodTest;
 import ttp.data.Data;
 import ttp.genetic.TTP_Individual;
-import ttp.genetic.operators.crossover.Cycle_XOver;
 import ttp.io.ReadFile;
-import unalcol.Tagged;
 import unalcol.descriptors.WriteDescriptors;
 import unalcol.evolution.EAFactory;
 import unalcol.evolution.haea.HaeaOperators;
@@ -20,12 +19,9 @@ import unalcol.optimization.OptimizationFunction;
 import unalcol.search.population.PopulationSearch;
 import unalcol.search.selection.Tournament;
 import unalcol.search.space.Space;
-import unalcol.services.AbstractMicroService;
+import unalcol.services.ProvidersSet;
 import unalcol.services.Service;
-import unalcol.services.ServicePool;
 import unalcol.tracer.Tracer;
-import unalcol.tracer.VectorTracer;
-import unalcol.types.collection.keymap.ImmutableKeyMap;
 import unalcol.types.collection.vector.Vector;
 
 /**
@@ -36,48 +32,38 @@ public class HaeaTest {
 
     @SuppressWarnings("rawtypes")
     public static void haea_service(OptimizationFunction<?> function) {
-        ServicePool service = MethodTest.population_service(function);
-        service.register(new WriteHaeaStep(), HaeaStep.class);
+    	Service.register( new WriteHaeaStep(), HaeaStep.class);
+        Service.register( new SimpleHaeaOperatorsDescriptor(), HaeaOperators.class);
+        Service.register( new WriteDescriptors(), HaeaOperators.class);
+		MethodTest.population_service(function);
     }
 
     public static void print_function(OptimizationFunction<?> function) {
-        try {
-            ServicePool service = (ServicePool) Service.get();
-            AbstractMicroService<?> s = service.get(Tracer.get, function);
-            System.out.println(s);
-            @SuppressWarnings("unchecked")
-            ImmutableKeyMap<AbstractMicroService<?>, Object> objs = (ImmutableKeyMap<AbstractMicroService<?>, Object>) s.run();
-            System.out.println(objs);
-            // Since we have just one tracer object associated to the function we pick the first set of results
-            // provided by the tracer	
-            s = null;
-            for (AbstractMicroService<?> k : objs.keys()) {
-                if (k instanceof VectorTracer) {
-                    s = k;
-                }
-            }
-            @SuppressWarnings("unchecked")
-            Vector<Object[]> v = (Vector<Object[]>) objs.get(s);
-            Object[] f = (Object[]) v.get(0);
-            // The fitness value is located as the second element in the array (the first one is the object)
-            double bf = (Double) (f[1]);
-            for (int i = 0; i < v.size(); i++) {
-                f = (Object[]) v.get(i);
-                double cf = (Double) (f[1]);
-                if (function.order().lt(bf, cf)) {
-                    bf = cf;
-                }
-                System.out.println(i + " " + bf);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    	try{
+			ProvidersSet tracers = Service.providers(Tracer.class, function);
+			Tracer s = (Tracer)tracers.get("VectorTracer");
+			@SuppressWarnings("unchecked")
+			Vector<Object[]> v = (Vector<Object[]>)s.get();
+			Object[] f = v.get(0);
+			// The fitness value is located as the second element in the array (the first one is the object)
+			double bf = (Double)(f[1]);			
+			/**	
+			for( int i=0; i<v.size(); i++ ){
+				f = (Object[])v.get(i);
+				double cf = (Double)(f[1]);
+
+				if( function.order().compare(bf, cf) < 0 ) bf = cf;
+				//System.out.println(i+" "+bf);
+			}
+			System.out.println("Best fitnests: "+ bf);
+			*/
+		}catch(Exception e){ e.printStackTrace(); }
     }
 
     public static void run() {
         //Data Load
         ReadFile read = new ReadFile();
-        Data data = read.readFile("D:\\Informacion\\Desktop\\TTP1\\10\\10_3_1_50.txt");
+        Data data = read.readFile("../../Dataset/10/10_3_1_50.txt");
         //Space
         Space<TTP_Individual> space = MethodTest.TTP_Space(data.getNumCities(),
                 data.getNumItems(), data.getKnapsackCapacity(), data.getAvProducts(), data.getProductWeights());
@@ -85,7 +71,6 @@ public class HaeaTest {
         OptimizationFunction<TTP_Individual> function = MethodTest.ttp_f(data);
         //Operators
         HaeaOperators<TTP_Individual> operators = MethodTest.operators();
-
         // Search method
         int POPSIZE = 450;
         int MAXITERS = 250;
@@ -97,13 +82,11 @@ public class HaeaTest {
 
         // Apply the search method
         // Services
-        ServicePool service = MethodTest.TTP_service(function, search);
-        service.register(new SimpleHaeaOperatorsDescriptor<TTP_Individual>(), HaeaOperators.class);
-        service.register(new WriteDescriptors<TTP_Individual>(), HaeaOperators.class);
+        MethodTest.TTP_service(function, search);     
         haea_service(function);
 
         // Apply the search method
-        Tagged<TTP_Individual> sol = search.solve(space);
+        search.solve(space);
 //        print_function(function);
     }
 
